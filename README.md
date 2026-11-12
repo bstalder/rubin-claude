@@ -87,3 +87,7 @@ plugins/rubin-analysis/
 templates/CLAUDE.md                  starter project instructions
 install.sh                           symlink installer (alternative to the plugin)
 ```
+
+## License
+
+BSD 3-Clause, the same as [lsst-dm/agent-skills](https://github.com/lsst-dm/agent-skills). See [LICENSE](LICENSE).
