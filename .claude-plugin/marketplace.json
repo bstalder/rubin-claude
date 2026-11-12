@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "rubin-claude",
+  "description": "Claude Code skills for analysing Rubin Observatory engineering and survey data on USDF/SDF and the RSP",
+  "owner": { "name": "Brian Stalder" },
+  "plugins": [
+    {
+      "name": "rubin-analysis",
+      "description": "Data access (ConsDB, EFD, narrative log, night report, Butler, LFA), notebook workflow, observatory-system facts and analysis-method guardrails for Rubin data",
+      "source": "./plugins/rubin-analysis",
+      "category": "science"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "rubin-analysis",
+  "version": "0.1.0",
+  "description": "Skills for analysing Rubin Observatory data with Claude: environment setup on SDF and RSP, ConsDB, EFD, observing logs, Butler/archives, notebooks, observatory systems, and analysis methods",
+  "author": { "name": "Brian Stalder" }
+}
