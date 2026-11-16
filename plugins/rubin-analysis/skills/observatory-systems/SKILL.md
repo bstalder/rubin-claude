@@ -15,7 +15,9 @@ Every item carries the date it was established. Hardware configuration changes, 
 - **Motorized louver mechanics.** Louver index *i* is driven by drives **2i (A) and 2i+1 (B)**.
   - `positionActual` is the mean of the two `encoderHeadCalibrated` values (~57 counts per %), so A/B desync shows up only in the A−B encoder offset.
   - `driveTemperature` always reads 0.
-  - Every parallelism fault seen in 2025–26 was **drive B not starting** (A moves ~65–75 counts, B frozen). Isolated single-drive faults preceded those faults by 1–9 h.
+  - **Two parallelism-fault modes (verified 2026-11-13).** Nov–Dec 2025 (H1, M1, E1): both drives moving, A gradually outruns B by ~15–20 counts, then trip. 2026 (B1 02-18, E1 06-19, B1 11-08): **drive B side does not move at all** while A moves ~65–75 counts to the trip. In the 2026 cases drive B is electrically live: it draws the same ~1.8–3.7 A as A and its actual torque tracks its command up to the 12 Nm limit, yet its encoder doesn't change. Isolated single-louver drive faults (x002) preceded those faults by 1–9 h.
+  - `logevent_brakesEngaged.brakes` is a bitmask with bit n = `Brake` enum value n (LOUVER_B1 = 7, E1 = 16, H1 = 25, M1 = 34). There is **one bit per louver, covering both drives' brakes**, with no per-drive brake signal. ts_xml doesn't say whether it is the commanded output or brake feedback.
+  - `command_resetDrivesLouvers.reset[68]` is indexed by **drive** (2i, 2i+1), not by louver. Resets logged with only `reset11` (Jun 2026, for E1, whose drives are 22/23) and an all-False reset (2026-11-08 12:39) did nothing for the faulted louver.
   - Fault codes: see the efd skill's topic reference.
 - Historically (2025–26) F/G louvers weren't commissioned and were excluded from night configurations. The rear access door (RAD, 180°) is always closed at night. During much of 2026 the louvers were 100 % open from May onward.
 - **LWS** (light/wind screen) reduces the effective aperture-shutter area from **200 m² to 119 m²**.
@@ -44,6 +46,7 @@ Every item carries the date it was established. Hardware configuration changes, 
 - **Wind:** ≈ 15 m/s sustained / ≈ 18 m/s gust operational practice. The design degraded-ops spec is 20 m/s sustained / 25 m/s gust.
 - **Dynalene coolant** reads warmer than its source setpoint along the line: e.g. −2 °C setpoint → ~1.4 °C at the chiller, ~2 °C at the TMA supply, ~3.6 °C at the camera. Use the measured temperature where you need it.
   - Condensation has been observed on **non-insulated Dynalene pipes near the TEA** (Dec 2025, Jan 2026, Feb 2026), mostly with the dome closed and the TMA at horizon.
+  - Operating guideline (log, 2026-11-13): when Dynalene − dew point (in-dome ESS:111, as in Watcher `DynaleneNearElWrap`) has been **< 0 °C for ~1 h**, observing pauses for a "non-invasive" Level 8 inspection of the TMA Dynalene lines. Logged wetting came only after 8–52 h below 0 °C (dome closed, TMA at horizon). Inspections after ≤ 6 h below 0 °C (margins down to −3.7 °C) found the lines dry or slightly damp.
 - **M1M3 glass temperature** comes from the ESS:114–117 thermocouples, not an `MTM1M3TS` topic.
 - The M1M3 force controller's mirror-moment fault band is ±11 000 N·m. Measured wind moments are ~100× below it.
 
