@@ -14,6 +14,7 @@ description: Use when querying the Rubin Consolidated Database (ConsDB) — per-
 | `lsst.summit.utils.ConsDbClient` | in-cluster (RSP) | `ConsDbClient("http://consdb-pq.consdb:8080/consdb")` |
 | Direct Postgres | SDF only | host `usdf-summitdb-logical-replica-svc.sdf.slac.stanford.edu`, db `exposurelog`, user `usdf`, password via `PGPASSFILE` |
 
+- `ConsDbClient` on the in-cluster URL fails from SDF with `NameResolutionError ... Failed to resolve 'consdb-pq.consdb'`. Code that must run both on Times Square and on SDF can check `socket.getaddrinfo(host, None)` and fall back to `get_clients()["consdb"]` (done in sp_notebooks ROSP-8, 2026-11-16).
 - **Default to `get_clients()`** for code others will run: it works in both places. On 2026-11-11 the FastAPI, TAP, narrative-log, night-report and EFD clients all worked from an SDF node with a token in `~/.lsst/usdf_rsp`. Older notes claiming "the REST API gives 401 from SSH" were missing a token.
 - Use direct Postgres on SDF for big pulls (no HTTP row limits, faster). Other hostnames (`usdf-summitdb.slac.stanford.edu`, `usdf-summitdb-replica*`) time out or don't resolve.
 - The same replica also serves the `narrativelog` and `nightreport` databases with the **same `usdf` password**. A pgpass line is matched on the database name, so either use `*` in the database field (`host:5432:*:usdf:<pw>`) or add one line per database.
