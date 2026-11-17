@@ -28,6 +28,7 @@ df = efd.query("SELECT mean(speed) FROM ... GROUP BY time(1m)")
 - **Results are UTC** (tz-aware index). ConsDB `obs_start` is **TAI** (+37 s). Convert before joining.
 - **`get_schema()` fails from SDF** (`Cannot connect to host sasquatch-schema-registry.sasquatch:8081`). To discover fields, use `get_fields(topic)` or run `select_time_series(topic, "*", …)` on a 5-minute window.
 - The rubin_nights client can log "EFD service not available from USDF" and fall back to an empty client. If that happens, use `EfdClient("usdf_efd")` directly.
+- The reverse also happens: on 2026-11-17 `EfdClient("usdf_efd")` returned `InfluxDBError('authorization failed')` from SDF, while the token-based `rubin_nights` EFD client worked. Code that must run on SDF should try both.
 
 ## Volume and chunking
 
